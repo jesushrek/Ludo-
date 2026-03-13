@@ -3,7 +3,6 @@
 
 #include <raylib.h>
 
-
 enum Colors { 
     Red,
     Green,
@@ -17,9 +16,9 @@ constexpr int g_size { g_proportion / g_board_proportions };
 
 constexpr Vector2 homeStretch[][6] {
     { { 1, 7 }, { 2, 7 }, { 3, 7 }, { 4, 7 }, { 5, 7 }, { 6, 7 } },
-    { { 7, 1 }, { 7, 2 }, { 7, 3 }, { 7, 4 }, { 7, 5 }, { 7, 6 } },
-    { { 13, 7 }, { 12, 7 }, { 11, 7 }, { 10, 7 }, { 9, 7 }, { 8, 7 } },
-    { { 7, 13 }, { 7, 12 }, { 7, 11 }, { 7, 10 }, { 7, 9 }, { 7, 8 } }
+        { { 7, 1 }, { 7, 2 }, { 7, 3 }, { 7, 4 }, { 7, 5 }, { 7, 6 } },
+        { { 13, 7 }, { 12, 7 }, { 11, 7 }, { 10, 7 }, { 9, 7 }, { 8, 7 } },
+        { { 7, 13 }, { 7, 12 }, { 7, 11 }, { 7, 10 }, { 7, 9 }, { 7, 8 } }
 };
 
 constexpr Color colors[] { 
@@ -69,6 +68,6 @@ constexpr Vector2 global_path[]
         { 0, 7 }, { 0, 6 },                                           // to red's safe 
 };
 
-constexpr float m_skip_delay { 1.0f };
+constexpr float m_skip_delay { 20.5f };
 
 #endif

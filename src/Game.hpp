@@ -69,8 +69,12 @@ class Game
 
         void update_game_logic()
         { 
-            float delta_time { GetFrameTime() * 195.0f };
-            static float skip_timer {};
+            static float skip_timer{};
+
+            if (skip_timer >= m_skip_delay)
+                skip_timer = 0.0f;
+
+            float delta_time { GetFrameTime() + 1.0f };
 
             if (m_has_rolled && !is_valid())
             { 
@@ -80,24 +84,38 @@ class Game
                     resolve_turn(false, false);
                 }
             }
-            skip_timer = 0.0f;
+        }
+
+        void move_to_next_turn()
+        { 
+            m_players[m_current_turn].set_turn(false);
+            do 
+            { 
+                m_current_turn = (m_current_turn + 1) % 4;
+            } while(m_players[m_current_turn].is_winner());
+
+            m_players[m_current_turn].set_turn(true);
+            m_has_rolled = false;
+            m_dice_roll = 0;
         }
 
         void resolve_turn(bool isKilled, bool is_finished)
         { 
             if (m_dice_roll == 1 || m_dice_roll == 6 || isKilled || is_finished)
             {
-                m_has_rolled = false;
-                m_dice_roll = 0;
+                if (m_players[m_current_turn].is_winner())
+                { 
+                    move_to_next_turn();
+                }
+                else 
+                {
+                    m_has_rolled = false;
+                    m_dice_roll = 0;
+                }
             }
             else 
             { 
-                m_players[m_current_turn].set_turn(false);
-                m_current_turn = (m_current_turn + 1) % 4;
-                m_players[m_current_turn].set_turn(true);
-
-                m_has_rolled = false;
-                m_dice_roll = 0;
+                move_to_next_turn();
             }
         }
         /*
@@ -220,13 +238,49 @@ class Game
 
         void process_input()
         { 
+            bool input_detected {};
+            Vector2 input_pos {};
+
+#if defined(MOBILE)
+            if (GetTouchPointCount() > 0)
+            { 
+                input_pos = GetTouchPosition(0);
+
+                if (IsGestureDetected(GESTURE_TAP))
+                    input_detected = true;
+            }
+#else
             if (IsKeyPressed(KEY_SPACE) && !m_has_rolled)
                 roll_dice();
+
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             { 
-                Vector2 mouse_pos = GetMousePosition();
-                handle_click(mouse_pos);
+                input_pos = GetMousePosition();
+                input_detected = true;
             }
+#endif
+
+            if (input_detected)
+            { 
+                int grid_x {
+                    static_cast<int>(input_pos.x) / g_size
+                };
+                int grid_y {
+                    static_cast<int>(input_pos.y) / g_size
+                };
+
+                if (grid_x >= 6 && grid_x <= 8
+                        && 
+                        grid_y >= 6 && grid_y <= 8)
+                { 
+                    roll_dice();
+                }
+                else if (m_has_rolled)
+                { 
+                    handle_click(input_pos);
+                }
+            }
+
             update_game_logic();
         }
 };

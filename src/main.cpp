@@ -8,6 +8,7 @@
 int main()
 { 
     InitWindow(g_proportion, g_proportion, "Ludo");
+    SetTargetFPS(30);
 
     Game ludo {};
     while (!WindowShouldClose())

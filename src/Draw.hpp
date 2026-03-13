@@ -59,21 +59,41 @@ void draw_dice(int value, Vector2 pos, int size)
 
 void draw_ludo_pawn(Vector2 position, Color color, float jumpY)
 { 
-    //base / shadow position
-    Vector2 basePos { position };
-    //pawn position when jumping
-    Vector2 pawnPos { position.x, position.y - jumpY };
-    //shadow
-    DrawEllipse(basePos.x, basePos.y + 10, 15, 5, Fade(BLACK, 0.2f));
-    // skirt / base 
-    DrawCircleSector(
-            Vector2 { pawnPos.x, pawnPos.y + 10 }, 18, 180, 360, 20, color);
-    //body
-    DrawRectangle(pawnPos.x - 5, pawnPos.y - 10, 10, 15, color);
-    //head
-    DrawCircle(pawnPos.x, pawnPos.y - 12, 10, color);
-    //outline
-    DrawCircleLines(pawnPos.x, pawnPos.y - 12, 10, Fade(BLACK, 0.3f));
+    // 1. Calculate the scaled sizes
+    float head_r   = g_size * 0.18f;
+    float base_r   = g_size * 0.25f;
+    float body_w   = g_size * 0.22f;
+    float body_h   = g_size * 0.33f;
+    
+    // 2. Define the vertical spacing as a ratio of body height
+    // This keeps the "neck" and "waist" gaps consistent
+    float head_offset = body_h * 0.8f; 
+    float skirt_offset = body_h * 0.6f;
+
+    // 3. Define positions
+    // Base/Shadow stays at 'position.y'
+    // All pawn parts move by exactly 'jumpY'
+    Vector2 pawn_center = { position.x, position.y - jumpY };
+
+    // --- DRAWING ---
+
+    // Shadow (No jumpY here so it stays on the ground)
+    DrawEllipse(position.x, position.y + skirt_offset, base_r * 0.8f, base_r * 0.4f, Fade(BLACK, 0.2f));
+
+    // Body (Middle) - Locked to pawn_center
+    Rectangle body_rect = { pawn_center.x - (body_w / 2.0f), pawn_center.y - (body_h / 2.0f), body_w, body_h };
+    DrawRectangleRec(body_rect, color);
+    DrawRectangleLinesEx(body_rect, 1.0f, Fade(BLACK, 0.3f));
+
+    // Skirt (Bottom) - Locked to pawn_center
+    Vector2 skirt_pos = { pawn_center.x, pawn_center.y + skirt_offset };
+    DrawCircleSector(skirt_pos, base_r, 180, 360, 20, color);
+    DrawCircleSectorLines(skirt_pos, base_r, 180, 360, 20, Fade(BLACK, 0.3f));
+
+    // Head (Top) - Locked to pawn_center
+    Vector2 head_pos = { pawn_center.x, pawn_center.y - head_offset };
+    DrawCircleV(head_pos, head_r, color);
+    DrawCircleLines(head_pos.x, head_pos.y, head_r, Fade(BLACK, 0.3f));
 }
 
 void draw_spawn()

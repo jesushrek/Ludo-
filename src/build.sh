@@ -1,1 +1,2 @@
-g++ main.cpp Constants.hpp -o main -lraylib -g 
+g++  main.cpp -o main -lraylib #-march=native -O3
+
