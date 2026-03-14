@@ -4,7 +4,7 @@
 #include "Constants.hpp"
 
 #include <raylib.h>
-#include <iostream>
+//#include <iostream>
 
 void draw_home_stretch()
 { 
@@ -183,7 +183,7 @@ void draw_board()
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     { 
         Vector2 mouse_pos { GetMousePosition() };
-        std::cout <<  (int)(mouse_pos.x / g_size) << ", " << (int)(mouse_pos.y / g_size) << '\n';
+//        std::cout <<  (int)(mouse_pos.x / g_size) << ", " << (int)(mouse_pos.y / g_size) << '\n';
     }
 }
 #endif 

@@ -228,12 +228,11 @@ class Game
         void draw_game()
         { 
             draw_board();
-            draw_dice(m_dice_roll, { 7 * g_size, 7 * g_size }, g_size * 0.75f);
-
             for (int p = 0; p < 4; ++p)
             { 
                 m_players[p].draw_pieces(g_size);
             }
+            draw_dice(m_dice_roll, { 7 * g_size, 7 * g_size }, g_size * 0.75f);
         }
 
         void process_input()

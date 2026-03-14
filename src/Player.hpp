@@ -18,7 +18,7 @@ struct Piece
 class Player 
 { 
     private:
-        Piece m_piece[4]{};
+        Piece m_piece[4];
         Color m_color{};
         bool is_my_turn{};
         int m_player_id{};
