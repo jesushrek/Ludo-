@@ -68,7 +68,7 @@ int main()
             game.modify_player(idx).set_won();
 
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(LIGHTGRAY);
         drop_down(&player_dropdown);
         if (play_button()) 
         {

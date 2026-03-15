@@ -14,6 +14,7 @@ int main()
     while (!WindowShouldClose())
     { 
         BeginDrawing();
+        ClearBackground(BLACK);
         ludo.draw_game();
         ludo.process_input();
         EndDrawing();
