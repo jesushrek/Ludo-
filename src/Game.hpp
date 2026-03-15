@@ -58,6 +58,11 @@ class Game
             m_players[0].set_turn(true);
         }
 
+        Player& modify_player(int idx)
+        { 
+            return m_players[idx];
+        }
+
         void roll_dice()
         { 
             if (!m_has_rolled)
@@ -89,10 +94,12 @@ class Game
         void move_to_next_turn()
         { 
             m_players[m_current_turn].set_turn(false);
+            int safety_counter = 0;
             do 
             { 
                 m_current_turn = (m_current_turn + 1) % 4;
-            } while(m_players[m_current_turn].is_winner());
+                ++safety_counter;
+            } while(m_players[m_current_turn].is_winner() && safety_counter < 4);
 
             m_players[m_current_turn].set_turn(true);
             m_has_rolled = false;
@@ -218,10 +225,12 @@ class Game
             int piece_idx { m_players[m_current_turn].get_piece_at(grid_x, grid_y) };
             if (piece_idx != -1)
             { 
-                m_players[m_current_turn].move_piece(piece_idx, m_dice_roll);
-                bool is_finished = check_finished(piece_idx);
-                bool isKilled = check_capture(piece_idx);
-                resolve_turn(isKilled, is_finished);
+                if (m_players[m_current_turn].move_piece(piece_idx, m_dice_roll))
+                { 
+                    bool is_finished = check_finished(piece_idx);
+                    bool isKilled = check_capture(piece_idx);
+                    resolve_turn(isKilled, is_finished);
+                }
             }
         }
 

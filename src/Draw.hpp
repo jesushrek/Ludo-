@@ -180,10 +180,12 @@ void draw_board()
     draw_home_stretch();
     draw_safe_points();
 
+    /*
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
     { 
         Vector2 mouse_pos { GetMousePosition() };
-//        std::cout <<  (int)(mouse_pos.x / g_size) << ", " << (int)(mouse_pos.y / g_size) << '\n';
+        std::cout <<  (int)(mouse_pos.x / g_size) << ", " << (int)(mouse_pos.y / g_size) << '\n';
     }
+    */
 }
 #endif 

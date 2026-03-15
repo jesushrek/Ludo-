@@ -83,17 +83,22 @@ class Player
             return -1;
         }
 
-        void move_piece(int piece_id, int dice_roll)
+        bool move_piece(int piece_id, int dice_roll)
         { 
-            if (piece_id < 0 || piece_id > 3) return;
+            if (is_winner()) return false;
+            if (piece_id < 0 || piece_id > 3) return false;
+
             Piece& p { m_piece[piece_id] };
             if (p.currentStep == -1)
             { 
                 p.currentStep = 0; 
+                return true;
             }
 
             else if (!p.isFinished)
             { 
+                if (p.currentStep + dice_roll > 56) return false;
+
                 if (p.currentStep + dice_roll <= 56)
                 { 
                     p.currentStep += dice_roll;
@@ -103,7 +108,11 @@ class Player
                 {
                     p.isFinished = true;
                 }
+
+                return true;
             }
+
+            return false;
         }
 
         void draw_pieces(int cellSize)
@@ -135,6 +144,12 @@ class Player
 
                 draw_ludo_pawn(screen_pos, m_color, jumpY);
             }
+        }
+
+        void set_won()
+        { 
+            for (int idx = 0; idx < 4; ++idx)
+                m_piece[idx].isFinished = true;
         }
 
         void reset_piece(int idx) { m_piece[idx].currentStep = -1; }
