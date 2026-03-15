@@ -44,11 +44,11 @@ bool is_tile_safe(Vector2 pos)
 class Game 
 { 
     private:
-        Player m_players[4];
         int m_current_turn{};
         int m_dice_roll{};
         bool m_has_rolled{};
     public:
+        Player m_players[4];
         Game()
             :m_players { 0, 1, 2, 3 }
         ,m_current_turn {0} // start with red

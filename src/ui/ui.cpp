@@ -2,7 +2,7 @@
 #include <raylib.h>
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
-#include "../gameLoop.cpp"
+#include "gameLoop.cpp"
 
 constexpr float _paddingX { 1.7 };
 constexpr float _paddingY { 1.7 };
@@ -48,16 +48,16 @@ int main()
     SetTargetFPS(60);
 
     int player_dropdown{};
-    bool can_break{};
     Game game{};
 
     GuiSetStyle(DEFAULT, TEXT_SIZE, _fontSize);
     GuiSetStyle(DEFAULT, TEXT_COLOR_NORMAL, ColorToInt(BLACK));
 
     bool kill = false;
+    bool finished = false;
     while (!kill)
     {
-        //Rectangle get_rectangle(int x, int y, const char* text, int override_x, int override_y)
+    bool finished_game{};
         GuiLabel({ 0, 0, 300, _fontSize }, "Kushma-Ludo");
         kill = WindowShouldClose();
         int player_count { 
@@ -72,8 +72,7 @@ int main()
         drop_down(&player_dropdown);
         if (play_button()) 
         {
-            printf("%d\n", player_count);
-            game_loop(game, &kill);
+            game_loop(game, &kill, &finished);
         }
         EndDrawing();
     }
